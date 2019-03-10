@@ -1,6 +1,7 @@
 package servlet;
 
 import data.City;
+import db.DbUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,14 +37,10 @@ public class SqlServlet extends HttpServlet {
 
 
     private List<City> getCityList() throws ClassNotFoundException, SQLException {
-        final String driver = "com.mysql.cj.jdbc.Driver";
-        Class.forName(driver);
-
         List<City> cityList = null;
-        final String dbPath = "jdbc:mysql://localhost:3306/world?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true"; //jdbc:mysql://localhost:3306/world?serverTimezone=UTC&allowPublicKeyRetrieval=true";
         final String sqlQuery = "SELECT Name, Population FROM city";
 
-        Connection conn = DriverManager.getConnection(dbPath, "root", "admin");
+        Connection conn = DbUtil.getInstance().getConnection();
         Statement statement = conn.createStatement();
         ResultSet resultSet = statement.executeQuery(sqlQuery);
         {
